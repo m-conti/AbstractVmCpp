@@ -17,7 +17,7 @@
 IOperand const *createOperand( eOperandType type, std::string const &value );
 
 template<typename T>
-class TOperand : public IOperand {
+class TOperand : public IOperand, public OperdandException {
 public:
 	explicit TOperand<T>( T value, eOperandType const &type );
 
@@ -117,6 +117,7 @@ IOperand const *TOperand<T>::operator*( IOperand const &rhs ) const {
 template<typename T>
 IOperand const *TOperand<T>::operator/( IOperand const &rhs ) const {
 	eOperandType precision = getGreaterPrecision( rhs );
+
 	std::string value = std::to_string(
 			cast( toString(), precision ) / cast( rhs.toString(), precision ));
 

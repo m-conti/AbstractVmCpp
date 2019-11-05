@@ -28,12 +28,21 @@ void Vm::push( eOperandType type, std::string const &value ) {
 
 IOperand const *Vm::pop( void ) {
 	IOperand const *elem = stack.front();
+	if ( !elem ) {
+		throw EmptyStackException();
+	}
 	stack.pop_front();
 	return elem;
 }
 
 void Vm::popNDelete( void ) {
-	delete pop(); // THROW ERROR
+	try {
+		delete pop();
+	}
+	catch ( EmptyStackException &e ) {
+		throw PopEmptyStackException();
+	}
+
 }
 
 void Vm::dump( void ) {
@@ -42,9 +51,9 @@ void Vm::dump( void ) {
 }
 
 void Vm::ass( eOperandType type, std::string const &value ) {
-	const IOperand*	front = stack.front();
-	const IOperand* op = createOperand( type, value );
-	if ( front->toString() == op->toString() ) {
+	const IOperand *front = stack.front();
+	const IOperand *op = createOperand( type, value );
+	if ( front->toString() == op->toString()) {
 		delete op;
 		// THROW ERROR
 	}
@@ -52,56 +61,80 @@ void Vm::ass( eOperandType type, std::string const &value ) {
 }
 
 void Vm::add( void ) {
-	const IOperand *a = pop();
-	const IOperand *b = pop();
-	const IOperand *c = *a + *b;
-	delete a;
-	delete b;
-	stack.push_front( c );
+	try {
+		const IOperand *a = pop();
+		const IOperand *b = pop();
+		const IOperand *c = *a + *b;
+		delete a;
+		delete b;
+		stack.push_front( c );
+	}
+	catch (EmptyStackException &e) {
+		throw OperandMissingException();
+	}
 }
 
 void Vm::sub( void ) {
-	const IOperand *a = pop();
-	const IOperand *b = pop();
-	const IOperand *c = *a - *b;
-	delete a;
-	delete b;
-	stack.push_front( c );
+	try {
+		const IOperand *a = pop();
+		const IOperand *b = pop();
+		const IOperand *c = *a - *b;
+		delete a;
+		delete b;
+		stack.push_front( c );
+	}
+	catch (EmptyStackException &e) {
+		throw OperandMissingException();
+	}
 }
 
 void Vm::mul( void ) {
-	const IOperand *a = pop();
-	const IOperand *b = pop();
-	const IOperand *c = *a * *b;
-	delete a;
-	delete b;
-	stack.push_front( c );
+	try {
+		const IOperand *a = pop();
+		const IOperand *b = pop();
+		const IOperand *c = *a * *b;
+		delete a;
+		delete b;
+		stack.push_front( c );
+	}
+	catch (EmptyStackException &e) {
+		throw OperandMissingException();
+	}
 }
 
 void Vm::div( void ) {
-	const IOperand *a = pop();
-	const IOperand *b = pop();
-	const IOperand *c = *a / *b;
-	delete a;
-	delete b;
-	stack.push_front( c );
+	try {
+		const IOperand *a = pop();
+		const IOperand *b = pop();
+		const IOperand *c = *a / *b;
+		delete a;
+		delete b;
+		stack.push_front( c );
+	}
+	catch (EmptyStackException &e) {
+		throw OperandMissingException();
+	}
 }
 
 void Vm::mod( void ) {
-	const IOperand *a = pop();
-	const IOperand *b = pop();
-	const IOperand *c = *a % *b;
-	delete a;
-	delete b;
-	stack.push_front( c );
+	try {
+		const IOperand *a = pop();
+		const IOperand *b = pop();
+		const IOperand *c = *a % *b;
+		delete a;
+		delete b;
+		stack.push_front( c );
+	}
+	catch (EmptyStackException &e) {
+		throw OperandMissingException();
+	}
 }
 
 void Vm::print( void ) {
-	const IOperand* front = stack.front();
+	const IOperand *front = stack.front();
 
-	if (front->getType() != eOperandType::Int8)
-		; // THROW ERROR
-	std::cout << std::stoi(front->toString());
+	if ( front->getType() != eOperandType::Int8 ); // THROW ERROR
+	std::cout << std::stoi( front->toString());
 }
 
 void Vm::exit( void ) {
