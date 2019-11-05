@@ -3,6 +3,3 @@
 //
 
 #include "TOperand.hpp"
-
-Factory* const Operand::factory = new Factory();
-

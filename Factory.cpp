@@ -4,33 +4,33 @@
 
 #include "Factory.hpp"
 
-IOperand const *Factory::createOperand( eOperandType type, std::string const & value ) const {
-	IOperand const *	(Factory::*createOperandArray[OPERAND_NUMBER])(std::string const & value) const = {
-		&Factory::createInt8,
-		&Factory::createInt16,
-		&Factory::createInt32,
-		&Factory::createFloat,
-		&Factory::createDouble
+IOperand const *createOperand( eOperandType type, std::string const &value ) {
+	IOperand const *(*createOperandArray[OPERAND_NUMBER])( std::string const &value ) = {
+			&createInt8,
+			&createInt16,
+			&createInt32,
+			&createFloat,
+			&createDouble
 	};
-	return ( (this->*createOperandArray[static_cast<int>(type)])(value) );
+	return ((*createOperandArray[static_cast<int>(type)])( value ));
 }
 
-IOperand const *Factory::createInt8( std::string const & value ) const {
-	return ( new TOperand<int8_t>(std::stoi(value), eOperandType::Int8) );
+IOperand const *createInt8( std::string const &value ) {
+	return ( new TOperand<int8_t>( std::stoi( value ), eOperandType::Int8 ) );
 }
 
-IOperand const *Factory::createInt16( std::string const & value ) const {
-	return ( new TOperand<int16_t>(std::stoi(value), eOperandType::Int16) );
+IOperand const *createInt16( std::string const &value ) {
+	return ( new TOperand<int16_t>( std::stoi( value ), eOperandType::Int16 ) );
 }
 
-IOperand const *Factory::createInt32( std::string const & value ) const {
-	return ( new TOperand<int32_t>(std::stoi(value), eOperandType::Int32) );
+IOperand const *createInt32( std::string const &value ) {
+	return ( new TOperand<int32_t>( std::stoi( value ), eOperandType::Int32 ) );
 }
 
-IOperand const *Factory::createFloat( std::string const & value ) const {
-	return nullptr;
+IOperand const *createFloat( std::string const &value ) {
+	return ( new TOperand<float>(std::stof( value ), eOperandType::Float) );
 }
 
-IOperand const *Factory::createDouble( std::string const & value ) const {
-	return nullptr;
+IOperand const *createDouble( std::string const &value ) {
+	return ( new TOperand<double>(std::stod( value ), eOperandType::Double) );
 }

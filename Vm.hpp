@@ -6,14 +6,48 @@
 # define ABSTRACTVMCPP_VM_HPP
 
 # include "Factory.hpp"
+# include "TOperand.hpp"
+# include <list>
+# include <iostream>
 
 class Vm {
 public:
 	Vm();
-	Vm( Vm const & src ) { (*this) = src; };
-	~Vm();
-	Vm &	operator=( Vm const & rhs );
 
+	Vm( Vm const &src ) { (*this) = src; };
+
+	~Vm();
+
+	Vm &operator=( Vm const &rhs );
+
+	// functions Vm
+
+	void push( eOperandType type, std::string const &value );
+
+	IOperand const *pop( void );
+
+	void popNDelete( void );
+
+	void dump( void );
+
+	void ass( eOperandType type, std::string const &value );
+
+	void add( void );
+
+	void sub( void );
+
+	void mul( void );
+
+	void div( void );
+
+	void mod( void );
+
+	void print( void );
+
+	void exit( void );
+
+private:
+	std::list<const IOperand *> stack;
 };
 
 
