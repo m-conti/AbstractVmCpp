@@ -10,6 +10,7 @@
 # include "IOperand.hpp"
 # include "Vm.hpp"
 # include "Factory.hpp"
+# include "Errors.hpp"
 # include <string>
 # include <cmath>
 

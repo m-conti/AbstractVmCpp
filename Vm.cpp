@@ -33,7 +33,7 @@ IOperand const *Vm::pop( void ) {
 }
 
 void Vm::popNDelete( void ) {
-	delete pop();
+	delete pop(); // THROW ERROR
 }
 
 void Vm::dump( void ) {

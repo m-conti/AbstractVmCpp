@@ -7,10 +7,11 @@
 
 # include "Factory.hpp"
 # include "TOperand.hpp"
+# include "Errors.hpp"
 # include <list>
 # include <iostream>
 
-class Vm {
+class Vm: public VmExceptions {
 public:
 	Vm();
 
