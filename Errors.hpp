@@ -55,6 +55,12 @@ public:
 			return ("An instruction is unknown.");
 		}
 	};
+	class UnknownOperandTypeException : public std::exception {
+	public:
+		virtual const char *what() const throw() {
+			return ("An operand type is unknown.");
+		}
+	};
 };
 class OperdandException {
 public:

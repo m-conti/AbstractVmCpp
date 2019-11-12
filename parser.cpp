@@ -15,8 +15,12 @@ eOperandType	castToEOperandType(std::string cast) {
 	};
 	std::array<std::string, OPERAND_NUMBER>::iterator	start = operands.begin();
 	std::array<std::string, OPERAND_NUMBER>::iterator	end = operands.end();
+	int		op = std::find(start, end, cast) - start;
 
-	return (static_cast<eOperandType>(start - std::find(start, end, cast)));
+	if (op >= OPERAND_NUMBER)
+		throw ParserExceptions::UnknownOperandTypeException();
+
+	return (static_cast<eOperandType>(op));
 }
 
 void			launchAction(Vm &vm, uint8_t	action, std::string value) {
