@@ -55,7 +55,7 @@ void Vm::ass( eOperandType type, std::string const &value ) {
 	const IOperand *op = createOperand( type, value );
 	if ( front->toString() == op->toString()) {
 		delete op;
-		// THROW ERROR
+		throw FailAssertException();
 	}
 	delete op;
 }
@@ -133,7 +133,8 @@ void Vm::mod( void ) {
 void Vm::print( void ) {
 	const IOperand *front = stack.front();
 
-	if ( front->getType() != eOperandType::Int8 ); // THROW ERROR
+	if ( front->getType() != eOperandType::Int8 )
+		throw FailAssertException();
 	std::cout << std::stoi( front->toString());
 }
 

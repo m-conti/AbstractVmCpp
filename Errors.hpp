@@ -8,6 +8,7 @@
 # include "TOperand.hpp"
 # include "Vm.hpp"
 
+
 class VmExceptions {
 public:
 	class EmptyStackException : public std::exception {
@@ -31,9 +32,16 @@ public:
 		}
 	};
 
+	class FailAssertException : public std::exception {
+	public:
+		virtual const char *what() const throw() {
+			return ("An assert instruction is not true.");
+		}
+	};
 };
 
 class ParserExceptions {
+public:
 	class SyntacticErrorException : public std::exception {
 	public:
 		virtual const char *what() const throw() {
@@ -48,8 +56,9 @@ class ParserExceptions {
 		}
 	};
 };
-
 class OperdandException {
+public:
+
 	class OverflowException : public std::exception {
 	public:
 		virtual const char *what() const throw() {
@@ -72,18 +81,12 @@ class OperdandException {
 	};
 };
 
+
+
 class NoExitException : public std::exception {
 public:
 	virtual const char *what() const throw() {
 		return ("The program doesn’t have an exit instruction.");
 	}
 };
-
-class FailAssertException : public std::exception {
-public:
-	virtual const char *what() const throw() {
-		return ("An assert instruction is not true.");
-	}
-};
-
 #endif //ABSTRACTVMCPP_ERRORS_HPP

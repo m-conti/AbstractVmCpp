@@ -14,39 +14,39 @@
 # include <string>
 # include <cmath>
 
-IOperand const *createOperand( eOperandType type, std::string const &value );
+IOperand const *createOperand(eOperandType type, std::string const &value);
 
 template<typename T>
 class TOperand : public IOperand, public OperdandException {
 public:
-	explicit TOperand<T>( T value, eOperandType const &type );
+	explicit TOperand<T>(T value, eOperandType const &type);
 
 	~TOperand<T>() override = default;
 
-	T const cast( std::string const &value, eOperandType type ) const;
+	T const cast(std::string const &value, eOperandType type) const;
 
 	int getPrecision() const override;
 
 	eOperandType getType() const override;
 
-	eOperandType getGreaterPrecision( IOperand const &rhs ) const;
+	eOperandType getGreaterPrecision(IOperand const &rhs) const;
 
-	IOperand const *operator+( IOperand const &rhs ) const override;
+	IOperand const *operator+(IOperand const &rhs) const override;
 
-	IOperand const *operator-( IOperand const &rhs ) const override;
+	IOperand const *operator-(IOperand const &rhs) const override;
 
-	IOperand const *operator*( IOperand const &rhs ) const override;
+	IOperand const *operator*(IOperand const &rhs) const override;
 
-	IOperand const *operator/( IOperand const &rhs ) const override;
+	IOperand const *operator/(IOperand const &rhs) const override;
 
-	IOperand const *operator%( IOperand const &rhs ) const override;
+	IOperand const *operator%(IOperand const &rhs) const override;
 
 	std::string const &toString() const override;
 
 	T getValue() const;
 
 private:
-	TOperand<T>() : _value( 0 ), _type( eOperandType::Int32 ), _str( "0" ) {};
+	TOperand<T>() : _value(0), _type(eOperandType::Int32), _str("0") {};
 	eOperandType const _type;
 	T const _value;
 	std::string _str;
@@ -54,21 +54,21 @@ private:
 
 
 template<typename T>
-TOperand<T>::TOperand( T value, eOperandType const &type ) : _value( value ), _type( type ) {
-	_str = std::to_string( value );
+TOperand<T>::TOperand(T value, eOperandType const &type) : _value(value), _type(type) {
+	_str = std::to_string(value);
 }
 
 template<typename T>
-T const TOperand<T>::cast( std::string const &value, eOperandType type ) const {
-	switch ( type ) {
+T const TOperand<T>::cast(std::string const &value, eOperandType type) const {
+	switch (type) {
 		case eOperandType::Int8:
 		case eOperandType::Int16:
 		case eOperandType::Int32:
-			return std::stoi( value );
+			return std::stoi(value);
 		case eOperandType::Float:
-			return std::stof( value );
+			return std::stof(value);
 		case eOperandType::Double:
-			return std::stod( value );
+			return std::stod(value);
 	}
 }
 
@@ -79,8 +79,8 @@ template<typename T>
 eOperandType TOperand<T>::getType() const { return (_type); }
 
 template<typename T>
-eOperandType TOperand<T>::getGreaterPrecision( IOperand const &rhs ) const {
-	if ( getPrecision() > rhs.getPrecision()) {
+eOperandType TOperand<T>::getGreaterPrecision(IOperand const &rhs) const {
+	if (getPrecision() > rhs.getPrecision()) {
 		return (getType());
 	} else {
 		return (rhs.getType());
@@ -88,68 +88,62 @@ eOperandType TOperand<T>::getGreaterPrecision( IOperand const &rhs ) const {
 }
 
 template<typename T>
-IOperand const *TOperand<T>::operator+( IOperand const &rhs ) const {
-	eOperandType precision = getGreaterPrecision( rhs );
+IOperand const *TOperand<T>::operator+(IOperand const &rhs) const {
+	eOperandType precision = getGreaterPrecision(rhs);
 	std::string value = std::to_string(
-			cast( toString(), precision ) + cast( rhs.toString(), precision ));
+			cast(toString(), precision) + cast(rhs.toString(), precision));
 
-	return (createOperand( precision, value ));
+	return (createOperand(precision, value));
 }
 
 template<typename T>
-IOperand const *TOperand<T>::operator-( IOperand const &rhs ) const {
-	eOperandType precision = getGreaterPrecision( rhs );
+IOperand const *TOperand<T>::operator-(IOperand const &rhs) const {
+	eOperandType precision = getGreaterPrecision(rhs);
 	std::string value = std::to_string(
-			cast( toString(), precision ) - cast( rhs.toString(), precision ));
+			cast(toString(), precision) - cast(rhs.toString(), precision));
 
-	return (createOperand( precision, value ));
+	return (createOperand(precision, value));
 }
 
 template<typename T>
-IOperand const *TOperand<T>::operator*( IOperand const &rhs ) const {
-	eOperandType precision = getGreaterPrecision( rhs );
+IOperand const *TOperand<T>::operator*(IOperand const &rhs) const {
+	eOperandType precision = getGreaterPrecision(rhs);
 	std::string value = std::to_string(
-			cast( toString(), precision ) * cast( rhs.toString(), precision ));
+			cast(toString(), precision) * cast(rhs.toString(), precision));
 
-	return (createOperand( precision, value ));
+	return (createOperand(precision, value));
 }
 
 template<typename T>
-IOperand const *TOperand<T>::operator/( IOperand const &rhs ) const {
-	eOperandType precision = getGreaterPrecision( rhs );
+IOperand const *TOperand<T>::operator/(IOperand const &rhs) const {
+	eOperandType precision = getGreaterPrecision(rhs);
+	double first_operand = static_cast<double>(cast(toString(), precision));
+	double second_operand = static_cast<double>(cast(rhs.toString(), precision));
 
-	std::string value = std::to_string(
-			cast( toString(), precision ) / cast( rhs.toString(), precision ));
+	if (!second_operand) {
+		throw NullDenominatorException();
+	}
+	std::string value = std::to_string(first_operand / second_operand);
 
-	return (createOperand( precision, value ));
+
+	return (createOperand(precision, value));
 }
 
 template<typename T>
-IOperand const *TOperand<T>::operator%( IOperand const &rhs ) const {
-//	eOperandType precision = getGreaterPrecision( rhs );
-//	std::string value = std::to_string( cast( toString(), precision ) % cast( rhs.toString(), precision ));
-//
-//	return (createOperand( precision, value ));
+IOperand const *TOperand<T>::operator%(IOperand const &rhs) const {
+	eOperandType precision = getGreaterPrecision(rhs);
+	double first_operand = static_cast<double>(cast(toString(), precision));
+	double second_operand = static_cast<double>(cast(rhs.toString(), precision));
+
+	if (!second_operand) {
+		throw NullDenominatorException();
+	}
+	std::string value = std::to_string(std::fmod(first_operand, second_operand));
+
+	return (createOperand(precision, value));
 	return nullptr;
 }
 
-template <> inline
-IOperand const *TOperand<float>::operator%( IOperand const &rhs ) const {
-
-	eOperandType precision = getGreaterPrecision( rhs );
-	std::string value = std::to_string( std::fmod( cast( toString(), precision ), cast( rhs.toString(), precision )));
-
-	return (createOperand( precision, value ));
-}
-
-template <> inline
-IOperand const *TOperand<double>::operator%( IOperand const &rhs ) const {
-
-	eOperandType precision = getGreaterPrecision( rhs );
-	std::string value = std::to_string( std::fmod( cast( toString(), precision ), cast( rhs.toString(), precision )));
-
-	return (createOperand( precision, value ));
-}
 
 template<typename T>
 std::string const &TOperand<T>::toString() const {
