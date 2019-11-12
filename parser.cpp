@@ -22,7 +22,7 @@ eOperandType	castToEOperandType(std::string cast) {
 void			launchAction(Vm &vm, uint8_t	action, std::string value) {
 	std::smatch	sm;
 
-	std::regex_match(value, sm, std::regex("^(.*)\\((.*)\\)$"));
+	std::regex_match(value, sm, std::regex("^ (.*)\\((.*)\\)$"));
 	if (!sm.size())
 		throw ParserExceptions::SyntacticErrorException();
 
@@ -32,7 +32,7 @@ void			launchAction(Vm &vm, uint8_t	action, std::string value) {
 		vm.push(castToEOperandType(sm[1]), sm[2]);
 }
 
-void			launchAction(Vm &vm, uint8_t	action) {
+bool			launchAction(Vm &vm, uint8_t	action) {
 	std::array<void (Vm::*)(void), (ACTIONS_NUMBER - 3)>	actions = {
 		&Vm::popNDelete,
 		&Vm::dump,
@@ -42,26 +42,26 @@ void			launchAction(Vm &vm, uint8_t	action) {
 		&Vm::div,
 		&Vm::mod,
 		&Vm::print,
-		&Vm::exit
 	};
 
-	if (action == 11)
-		return ;
+	if (action >= 10)
+		return (action == 10);
 	else if (action > 3)
 		--action;
 	--action;
 
 	(vm.*actions[action])();
+	return (false);
 }
 
-void			launchInstruction(Vm &vm, std::string const &line) {
+bool			launchInstruction(Vm &vm, std::string const &line) {
 	bool error = true;
 	std::smatch sm;
 	std::array<std::regex, ACTIONS_NUMBER>	reg = {
-			std::regex("^push (.*)$"),
+			std::regex("^push(.*)$"),
 			std::regex("^pop$"),
 			std::regex("^dump$"),
-			std::regex("^assert (.*)$"),
+			std::regex("^assert(.*)$"),
 			std::regex("^add$"),
 			std::regex("^sub$"),
 			std::regex("^mul$"),
@@ -78,13 +78,15 @@ void			launchInstruction(Vm &vm, std::string const &line) {
 			if (sm.size() > 1)
 				launchAction(vm, i, sm[1]);
 			else
-				launchAction(vm, i);
+				if (launchAction(vm, i))
+					return true;
 			error = false;
 			break;
 		}
 	}
 	if (error)
 		throw ParserExceptions::UnknownInstructionException();
+	return (false);
 }
 
 void				parseFile(Vm &vm, std::string const &file_name) {
@@ -93,7 +95,8 @@ void				parseFile(Vm &vm, std::string const &file_name) {
 
 	stream.open(file_name);
 	while (std::getline(stream, str)) {
-		launchInstruction(vm, str);
+		if (launchInstruction(vm, str))
+			break ;
 	}
 	stream.close();
 }
@@ -102,6 +105,7 @@ void				parseInput(Vm &vm) {
 	std::string	str;
 
 	while (std::getline(std::cin, str)) {
-		launchInstruction(vm, str);
+		if (launchInstruction(vm, str))
+			break ;
 	}
 }
