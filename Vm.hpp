@@ -5,6 +5,8 @@
 #ifndef ABSTRACTVMCPP_VM_HPP
 # define ABSTRACTVMCPP_VM_HPP
 
+# define ACTIONS_NUMBER 12
+
 # include "Factory.hpp"
 # include "TOperand.hpp"
 # include "Errors.hpp"

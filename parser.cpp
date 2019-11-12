@@ -4,10 +4,60 @@
 
 # include "AbstractVm.hpp"
 
-int 	instruction(std::string line) {
-	int i = 0;
+
+eOperandType	castToEOperandType(std::string cast) {
+	std::array<std::string, OPERAND_NUMBER> operands = {
+			"int8",
+			"int16",
+			"int32",
+			"float",
+			"double",
+	};
+	std::array<std::string, OPERAND_NUMBER>::iterator	start = operands.begin();
+	std::array<std::string, OPERAND_NUMBER>::iterator	end = operands.end();
+
+	return (static_cast<eOperandType>(start - std::find(start, end, cast)));
+}
+
+void			launchAction(Vm &vm, uint8_t	action, std::string value) {
+	std::smatch	sm;
+
+	std::regex_match(value, sm, std::regex("^(.*)\\((.*)\\)$"));
+	if (!sm.size())
+		throw ParserExceptions::SyntacticErrorException();
+
+	if (action)
+		vm.ass(castToEOperandType(sm[1]), sm[2]);
+	else
+		vm.push(castToEOperandType(sm[1]), sm[2]);
+}
+
+void			launchAction(Vm &vm, uint8_t	action) {
+	std::array<void (Vm::*)(void), (ACTIONS_NUMBER - 3)>	actions = {
+		&Vm::popNDelete,
+		&Vm::dump,
+		&Vm::add,
+		&Vm::sub,
+		&Vm::mul,
+		&Vm::div,
+		&Vm::mod,
+		&Vm::print,
+		&Vm::exit
+	};
+
+	if (action == 11)
+		return ;
+	else if (action > 3)
+		--action;
+	--action;
+
+	(vm.*actions[action])();
+}
+
+void			launchInstruction(Vm &vm, std::string const &line) {
+	bool error = true;
 	std::smatch sm;
-	std::array<std::regex, 12>	reg = {
+	std::array<std::regex, ACTIONS_NUMBER>	reg = {
 			std::regex("^push (.*)$"),
 			std::regex("^pop$"),
 			std::regex("^dump$"),
@@ -19,36 +69,39 @@ int 	instruction(std::string line) {
 			std::regex("^mod$"),
 			std::regex("^print$"),
 			std::regex("^exit$"),
-			std::regex("^;(.*)$")
+			std::regex("^;.*$")
 	};
 
-	for (unsigned int i = 0; i < 12; ++i) {
-		if (std::regex_match(line, sm, reg[i]))
-			std::cout << i << " " << sm[1] << std::endl;
+	for (uint8_t i = 0; i < 12; ++i) {
+		std::regex_match(line, sm, reg[i]);
+		if (sm.size()) {
+			if (sm.size() > 1)
+				launchAction(vm, i, sm[1]);
+			else
+				launchAction(vm, i);
+			error = false;
+			break;
+		}
 	}
+	if (error)
+		throw ParserExceptions::UnknownInstructionException();
 }
 
-void	parseLine(Vm &vm, std::string const &line) {
-	std::cout << line <<std::endl;
-	instruction(line);
-
-}
-
-void	parseFile(Vm &vm, std::string const &file_name) {
+void				parseFile(Vm &vm, std::string const &file_name) {
 	std::fstream	stream;
 	std::string		str;
 
 	stream.open(file_name);
 	while (std::getline(stream, str)) {
-		parseLine(vm, str);
+		launchInstruction(vm, str);
 	}
 	stream.close();
 }
 
-void	parseInput(Vm &vm) {
+void				parseInput(Vm &vm) {
 	std::string	str;
 
 	while (std::getline(std::cin, str)) {
-		parseLine(vm, str);
+		launchInstruction(vm, str);
 	}
 }
