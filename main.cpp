@@ -8,11 +8,22 @@ int		main(int ac, char **av) {
 
 	Vm vm;
 
-	if (ac == 1)
-		parseInput(vm);
+	if (ac == 1) {
+		try {
+			parseInput(vm);
+		}
+		catch (std::exception const &e) {
+			std::cout << "Error : " << e.what() << std::endl;
+		}
+	}
 	else {
 		for (int i = 1; i < ac; ++i) {
-			parseFile(vm, av[i]);
+			try {
+				parseFile(vm, av[i]);
+			}
+			catch (std::exception const &e) {
+				std::cout << "Error : " << e.what() << std::endl;
+			}
 		}
 	}
 	return (0);

@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.14)
-project(AbstractVmCpp)
+cmake_minimum_required(VERSION 3.15)
+project(AbstractVm)
 
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
-add_executable(AbstractVmCpp
+add_executable(AbstractVm
         AbstractVm.hpp
         EOperandType.hpp
         Errors.hpp
@@ -14,6 +14,7 @@ add_executable(AbstractVmCpp
         IOperand.hpp
         main.cpp
         parser.cpp
+        parser.hpp
         TOperand.cpp
         TOperand.hpp
         Vm.cpp

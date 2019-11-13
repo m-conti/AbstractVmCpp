@@ -2,7 +2,7 @@
 // Created by matthieu CONTI on 12/11/2019.
 //
 
-# include "AbstractVm.hpp"
+# include "parser.hpp"
 
 
 eOperandType	castToEOperandType(std::string cast) {
@@ -96,20 +96,39 @@ bool			launchInstruction(Vm &vm, std::string const &line) {
 void				parseFile(Vm &vm, std::string const &file_name) {
 	std::fstream	stream;
 	std::string		str;
+	int				i = 0;
+	bool			exit;
 
-	stream.open(file_name);
-	while (std::getline(stream, str)) {
-		if (launchInstruction(vm, str))
-			break ;
+	stream.open(file_name, std::fstream::in);
+	if (!stream.is_open()) {
+		throw FileErrorException();
 	}
+	while (std::getline(stream, str)) {
+		++i;
+		try {
+			exit = launchInstruction(vm, str);
+			if (exit)
+				break ;
+		}
+		catch (std::exception const &e) {
+			std::cout << "Error, line " << i << " : " << e.what() << std::endl;
+		}
+	}
+	if (!exit)
+		throw NoExitException();
 	stream.close();
 }
 
 void				parseInput(Vm &vm) {
 	std::string	str;
+	bool		exit = false;
 
 	while (std::getline(std::cin, str)) {
-		if (launchInstruction(vm, str))
+		if (!exit)
+			exit = launchInstruction(vm, str);
+		if (str == ";;")
 			break ;
 	}
+	if (!exit)
+		throw NoExitException();
 }

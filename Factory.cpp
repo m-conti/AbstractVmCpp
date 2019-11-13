@@ -16,21 +16,21 @@ IOperand const *createOperand( eOperandType type, std::string const &value ) {
 }
 
 IOperand const *createInt8( std::string const &value ) {
-	return ( new TOperand<int8_t>( std::stoi( value ), eOperandType::Int8 ) );
+	return ( new TOperand<int8_t>( value, eOperandType::Int8 ) );
 }
 
 IOperand const *createInt16( std::string const &value ) {
-	return ( new TOperand<int16_t>( std::stoi( value ), eOperandType::Int16 ) );
+	return ( new TOperand<int16_t>( value, eOperandType::Int16 ) );
 }
 
 IOperand const *createInt32( std::string const &value ) {
-	return ( new TOperand<int32_t>( std::stoi( value ), eOperandType::Int32 ) );
+	return ( new TOperand<int32_t>( value, eOperandType::Int32 ) );
 }
 
 IOperand const *createFloat( std::string const &value ) {
-	return ( new TOperand<float>(std::stof( value ), eOperandType::Float) );
+	return ( new TOperand<float>( value, eOperandType::Float) );
 }
 
 IOperand const *createDouble( std::string const &value ) {
-	return ( new TOperand<double>(std::stod( value ), eOperandType::Double) );
+	return ( new TOperand<double>( value, eOperandType::Double) );
 }

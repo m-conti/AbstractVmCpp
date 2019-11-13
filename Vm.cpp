@@ -10,7 +10,6 @@ Vm::Vm() {
 
 Vm::~Vm() {
 	for ( std::list<const IOperand *>::iterator it = stack.begin(); it != stack.end(); ++it ) {
-		std::cout << "delete : " << (*it)->toString() << std::endl;
 		delete (*it);
 	}
 }

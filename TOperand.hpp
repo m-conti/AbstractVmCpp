@@ -7,12 +7,8 @@
 #ifndef ABSTRACTVMCPP_TOPERAND_HPP
 # define ABSTRACTVMCPP_TOPERAND_HPP
 
-# include "IOperand.hpp"
-# include "Vm.hpp"
-# include "Factory.hpp"
-# include "Errors.hpp"
-# include <string>
-# include <cmath>
+# include "AbstractVm.hpp"
+
 
 IOperand const *createOperand(eOperandType type, std::string const &value);
 
@@ -20,6 +16,7 @@ template<typename T>
 class TOperand : public IOperand, public OperdandException {
 public:
 	explicit TOperand<T>(T value, eOperandType const &type);
+	explicit TOperand<T>(std::string value, eOperandType const &type);
 
 	~TOperand<T>() override = default;
 
@@ -47,15 +44,28 @@ public:
 
 private:
 	TOperand<T>() : _value(0), _type(eOperandType::Int32), _str("0") {};
-	eOperandType const _type;
-	T const _value;
-	std::string _str;
+	eOperandType const	_type;
+	T					_value;
+	std::string			_str;
 };
-
 
 template<typename T>
 TOperand<T>::TOperand(T value, eOperandType const &type) : _value(value), _type(type) {
 	_str = std::to_string(value);
+}
+
+
+template<typename T>
+TOperand<T>::TOperand(std::string value, eOperandType const &type) : _type(type) {
+	std::numeric_limits<T>	limit;
+	double number	=	std::stod( value );
+
+	if (number > limit.max())
+		throw (OperdandException::OverflowException());
+	if (number < limit.min())
+		throw (OperdandException::UnderflowException());
+	_value = static_cast<T>(number);
+	_str = std::to_string(_value);
 }
 
 template<typename T>
@@ -90,8 +100,10 @@ eOperandType TOperand<T>::getGreaterPrecision(IOperand const &rhs) const {
 template<typename T>
 IOperand const *TOperand<T>::operator+(IOperand const &rhs) const {
 	eOperandType precision = getGreaterPrecision(rhs);
-	std::string value = std::to_string(
-			cast(toString(), precision) + cast(rhs.toString(), precision));
+	double first_operand = static_cast<double>(cast(toString(), precision));
+	double second_operand = static_cast<double>(cast(rhs.toString(), precision));
+
+	std::string value = std::to_string(first_operand + second_operand);
 
 	return (createOperand(precision, value));
 }
@@ -99,8 +111,10 @@ IOperand const *TOperand<T>::operator+(IOperand const &rhs) const {
 template<typename T>
 IOperand const *TOperand<T>::operator-(IOperand const &rhs) const {
 	eOperandType precision = getGreaterPrecision(rhs);
-	std::string value = std::to_string(
-			cast(toString(), precision) - cast(rhs.toString(), precision));
+	double first_operand = static_cast<double>(cast(toString(), precision));
+	double second_operand = static_cast<double>(cast(rhs.toString(), precision));
+
+	std::string value = std::to_string(first_operand - second_operand);
 
 	return (createOperand(precision, value));
 }
@@ -108,8 +122,10 @@ IOperand const *TOperand<T>::operator-(IOperand const &rhs) const {
 template<typename T>
 IOperand const *TOperand<T>::operator*(IOperand const &rhs) const {
 	eOperandType precision = getGreaterPrecision(rhs);
-	std::string value = std::to_string(
-			cast(toString(), precision) * cast(rhs.toString(), precision));
+	double first_operand = static_cast<double>(cast(toString(), precision));
+	double second_operand = static_cast<double>(cast(rhs.toString(), precision));
+
+	std::string value = std::to_string(first_operand * second_operand);
 
 	return (createOperand(precision, value));
 }

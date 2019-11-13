@@ -7,7 +7,7 @@
 
 # define OPERAND_NUMBER 5
 
-# include "TOperand.hpp"
+# include "AbstractVm.hpp"
 
 IOperand const *createOperand( eOperandType type, std::string const &value );
 

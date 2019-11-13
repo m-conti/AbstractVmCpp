@@ -5,8 +5,7 @@
 #ifndef ABSTRACTVMCPP_ERRORS_HPP
 # define ABSTRACTVMCPP_ERRORS_HPP
 
-# include "TOperand.hpp"
-# include "Vm.hpp"
+# include "AbstractVm.hpp"
 
 
 class VmExceptions {
@@ -95,4 +94,13 @@ public:
 		return ("The program doesn’t have an exit instruction.");
 	}
 };
+
+class FileErrorException : public std::exception {
+public:
+	virtual const char *what() const throw() {
+		return ("The program can’t read the file.");
+	}
+};
+
+
 #endif //ABSTRACTVMCPP_ERRORS_HPP

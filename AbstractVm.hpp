@@ -5,22 +5,27 @@
 #ifndef ABSTRACTVM_ABSTRACTVM_HPP
 #define ABSTRACTVM_ABSTRACTVM_HPP
 
-# include <fstream>
 # include <string>
-# include <sstream>
-# include <iostream>
-# include <array>
 # include <regex>
 
+# include <fstream>
+# include <sstream>
+# include <iostream>
 
+# include <list>
+# include <array>
+
+# include <cmath>
+
+# include <limits>
+
+# include "Errors.hpp"
 # include "EOperandType.hpp"
-# include "Vm.hpp"
-# include "Factory.hpp"
+# include "IOperand.hpp"
 # include "TOperand.hpp"
-
-void	parseLine(Vm &vm, std::string const &line);
-void	parseFile(Vm &vm, std::string const &file_name);
-void	parseInput(Vm &vm);
+# include "Factory.hpp"
+# include "Vm.hpp"
+# include "parser.hpp"
 
 
 #endif //ABSTRACTVM_ABSTRACTVM_HPP

@@ -7,11 +7,7 @@
 
 # define ACTIONS_NUMBER 12
 
-# include "Factory.hpp"
-# include "TOperand.hpp"
-# include "Errors.hpp"
-# include <list>
-# include <iostream>
+# include "AbstractVm.hpp"
 
 class Vm: public VmExceptions {
 public:
