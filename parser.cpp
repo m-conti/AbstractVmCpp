@@ -93,18 +93,15 @@ bool			launchInstruction(Vm &vm, std::string const &line) {
 	return (false);
 }
 
-void				parseFile(Vm &vm, std::string const &file_name) {
-	std::fstream	stream;
+void 				parseStream(Vm &vm, std::iostream &stream) {
 	std::string		str;
 	int				i = 0;
 	bool			exit;
 
-	stream.open(file_name, std::fstream::in);
-	if (!stream.is_open()) {
-		throw FileErrorException();
-	}
 	while (std::getline(stream, str)) {
 		++i;
+		if (!str[0])
+			continue ;
 		try {
 			exit = launchInstruction(vm, str);
 			if (exit)
@@ -116,19 +113,29 @@ void				parseFile(Vm &vm, std::string const &file_name) {
 	}
 	if (!exit)
 		throw NoExitException();
+}
+
+void				parseFile(Vm &vm, std::string const &file_name) {
+	std::fstream	stream;
+
+	stream.open(file_name, std::fstream::in);
+	if (!stream.is_open()) {
+		throw FileErrorException();
+	}
+	parseStream(vm, stream);
 	stream.close();
 }
 
 void				parseInput(Vm &vm) {
+	std::stringstream stream;
 	std::string	str;
-	bool		exit = false;
 
 	while (std::getline(std::cin, str)) {
-		if (!exit)
-			exit = launchInstruction(vm, str);
+		stream << str;
+		stream << std::endl;
 		if (str == ";;")
 			break ;
 	}
-	if (!exit)
-		throw NoExitException();
+	std::cout << stream.str() << std::endl;
+	parseStream(vm, stream);
 }

@@ -52,7 +52,8 @@ void Vm::dump( void ) {
 void Vm::ass( eOperandType type, std::string const &value ) {
 	const IOperand *front = stack.front();
 	const IOperand *op = createOperand( type, value );
-	if ( front->toString() == op->toString()) {
+
+	if ( front->toString() != op->toString() ) {
 		delete op;
 		throw FailAssertException();
 	}

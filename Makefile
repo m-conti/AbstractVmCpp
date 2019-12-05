@@ -3,16 +3,17 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: tbehra <tbehra@student.42.fr>              +#+  +:+       +#+         #
+#    By: mconti <mconti@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2018/06/02 14:00:49 by tbehra            #+#    #+#              #
-#    Updated: 2018/06/29 13:09:21 by mmanley          ###   ########.fr        #
+#    Created: 2018/06/02 14:00:49 by mconti            #+#    #+#              #
+#    Updated: 2018/06/29 13:09:21 by mconti           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: all re clean fclean
 
 CC		= clang++
+CVER    = -std=c++11
 CFLAGS	= -Wall -Werror -Wextra
 NAME	= avm
 NAMEP	= ./$(NAME)
@@ -26,11 +27,12 @@ GREEN	= \x1b[32m
 
 WHITE	= \x1b[0m
 
-SRC		=	Vm.cpp  Factory.cpp main.cpp
+SRC		=	main.cpp    Factory.cpp     helpers.cpp         parser.cpp      Vm.cpp
 
 OBJ		= $(SRC:.cpp=.o)
 
-INC		=	Vm.hpp	Factory.hpp EOperandType.hpp	IOperand.hpp
+INC		=	AbstractVm.hpp 	Factory.hpp EOperandType.hpp	IOperand.hpp    Vm.hpp  \
+            Errors.hpp      helpers.hpp parser.hpp          TOperand.hpp
 
 INC_PATH = ./
 
@@ -41,21 +43,21 @@ all:  $(OBJDIR) $(NAMEP)
 	@echo > /dev/null
 
 $(NAMEP): obj $(OBJP)
-	@$(CC) $(CFLAGS) -o $@ $(OBJP) -I$(INC_PATH)
+	@$(CC) $(CVER) $(CFLAGS) -o $@ $(OBJP) -I$(INC_PATH)
 	@echo "${WHITE}$(NAMEP)			${GREEN}DONE${WHITE}"
 
 test: all
 	@$(NAMEP)
 
 debug: obj $(OBJP)
-	@$(CC) $(CFLAGS) -o $(DEBUG) $(OBJP) -I$(INC_PATH) $(FAN)
+	@$(CC) $(CVER) $(CFLAGS) -o $(DEBUG) $(OBJP) -I$(INC_PATH) $(FAN)
 	@echo "${WHITE}$(DEBUG)			${GREEN}DONE${WHITE}"
 
 obj :
 	@mkdir -p $(OBJDIR)
 
 $(OBJDIR)/%.o: %.cpp $(INCP)
-	@$(CC) $(CFLAGS) -o $@ -c $< -I$(INC_PATH)
+	@$(CC) $(CVER) $(CFLAGS) -o $@ -c $< -I$(INC_PATH)
 
 clean:
 	@rm -rf $(OBJDIR)

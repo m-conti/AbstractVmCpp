@@ -19,6 +19,7 @@
 
 # include <limits>
 
+# include "helpers.hpp"
 # include "Errors.hpp"
 # include "EOperandType.hpp"
 # include "IOperand.hpp"

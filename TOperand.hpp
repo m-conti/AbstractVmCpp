@@ -52,6 +52,7 @@ private:
 template<typename T>
 TOperand<T>::TOperand(T value, eOperandType const &type) : _value(value), _type(type) {
 	_str = std::to_string(value);
+	noTrailingZero(_str);
 }
 
 
@@ -66,6 +67,7 @@ TOperand<T>::TOperand(std::string value, eOperandType const &type) : _type(type)
 		throw (OperdandException::UnderflowException());
 	_value = static_cast<T>(number);
 	_str = std::to_string(_value);
+	noTrailingZero(_str);
 }
 
 template<typename T>
@@ -157,7 +159,6 @@ IOperand const *TOperand<T>::operator%(IOperand const &rhs) const {
 	std::string value = std::to_string(std::fmod(first_operand, second_operand));
 
 	return (createOperand(precision, value));
-	return nullptr;
 }
 
 

@@ -15,7 +15,6 @@ add_executable(AbstractVm
         main.cpp
         parser.cpp
         parser.hpp
-        TOperand.cpp
         TOperand.hpp
         Vm.cpp
-        Vm.hpp)
+        Vm.hpp helpers.cpp helpers.hpp)
