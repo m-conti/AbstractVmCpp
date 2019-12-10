@@ -136,6 +136,5 @@ void				parseInput(Vm &vm) {
 		if (str == ";;")
 			break ;
 	}
-	std::cout << stream.str() << std::endl;
 	parseStream(vm, stream);
 }
