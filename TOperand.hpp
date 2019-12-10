@@ -63,8 +63,9 @@ TOperand<T>::TOperand(std::string value, eOperandType const &type) : _type(type)
 
 	if (number > limit.max())
 		throw (OperdandException::OverflowException());
-	if (number < limit.min())
+	if ( (static_cast<int>(type) < 3 && number < limit.min()) || (static_cast<int>(type) >= 3 && number < limit.lowest()) ) {
 		throw (OperdandException::UnderflowException());
+	}
 	_value = static_cast<T>(number);
 	_str = std::to_string(_value);
 	noTrailingZero(_str);
