@@ -5,6 +5,9 @@
 #include "helpers.hpp"
 
 void 	noTrailingZero(std::string &str) {
-	if (str.find('.') != std::string::npos)
-		str.erase(str.find_last_not_of('0') + 1, std::string::npos);
+	uint8_t	pos;
+	if (str.find('.') != std::string::npos) {
+		pos = (str.find_last_not_of('0') == str.find('.')) ? 0 : 1;
+		str.erase(str.find_last_not_of('0') + pos, std::string::npos);
+	}
 }
