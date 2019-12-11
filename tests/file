@@ -14,6 +14,5 @@ push int16(13)
 push int16(1)
 mul
 dump
-dump
 exit
 ;;

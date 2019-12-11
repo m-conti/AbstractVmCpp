@@ -135,7 +135,8 @@ void Vm::print( void ) {
 
 	if ( front->getType() != eOperandType::Int8 )
 		throw FailAssertException();
-	std::cout << std::stoi( front->toString());
+	std::cout << static_cast<char>(std::stoi(front->toString()));
+	// std::cout << std::stoi( front->toString());
 }
 
 void Vm::exit( void ) {
