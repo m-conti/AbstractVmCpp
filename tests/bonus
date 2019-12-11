@@ -1,9 +1,0 @@
-push int8(42)
-sin
-cos
-tan
-mid
-max
-min
-dump
-exit

@@ -62,17 +62,17 @@ bool			launchInstruction(Vm &vm, std::string const &line) {
 	bool error = true;
 	std::smatch sm;
 	std::array<std::regex, ACTIONS_NUMBER>	reg = {
-			std::regex("^push(.*)$"),
-			std::regex("^pop$"),
-			std::regex("^dump$"),
-			std::regex("^assert(.*)$"),
-			std::regex("^add$"),
-			std::regex("^sub$"),
-			std::regex("^mul$"),
-			std::regex("^div$"),
-			std::regex("^mod$"),
-			std::regex("^print$"),
-			std::regex("^exit$"),
+			std::regex("^push(.*\\))\\s*(?:;.*)?$"),
+			std::regex("^pop\\s*(?:;.*)?$"),
+			std::regex("^dump\\s*(?:;.*)?$"),
+			std::regex("^assert(.*\\))\\s*(?:;.*)?$"),
+			std::regex("^add\\s*(?:;.*)?$"),
+			std::regex("^sub\\s*(?:;.*)?$"),
+			std::regex("^mul\\s*(?:;.*)?$"),
+			std::regex("^div\\s*(?:;.*)?$"),
+			std::regex("^mod\\s*(?:;.*)?$"),
+			std::regex("^print\\s*(?:;.*)?$"),
+			std::regex("^exit\\s*(?:;.*)?$"),
 			std::regex("^;.*$")
 	};
 

@@ -20,7 +20,7 @@ public:
 
 	~TOperand<T>() override = default;
 
-	T const cast(std::string const &value, eOperandType type) const;
+	double cast(std::string const &value, eOperandType type) const;
 
 	int getPrecision() const override;
 
@@ -72,7 +72,7 @@ TOperand<T>::TOperand(std::string value, eOperandType const &type) : _type(type)
 }
 
 template<typename T>
-T const TOperand<T>::cast(std::string const &value, eOperandType type) const {
+double TOperand<T>::cast(std::string const &value, eOperandType type) const {
 	switch (type) {
 		case eOperandType::Int8:
 		case eOperandType::Int16:

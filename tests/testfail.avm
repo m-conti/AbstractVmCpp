@@ -1,4 +1,4 @@
-;; test fichier ;;
+;; test fail ;;
 push int16(5)
 push int16(3); lil
 
