@@ -50,6 +50,10 @@ void Vm::dump( void ) {
 }
 
 void Vm::ass( eOperandType type, std::string const &value ) {
+
+	if (stack.size() <= 0)
+		throw (EmptyStackException());
+
 	const IOperand *front = stack.front();
 	const IOperand *op = createOperand( type, value );
 
@@ -133,6 +137,8 @@ void Vm::mod( void ) {
 void Vm::print( void ) {
 	const IOperand *front = stack.front();
 
+	if (stack.size() <= 0)
+		throw (EmptyStackException());
 	if ( front->getType() != eOperandType::Int8 )
 		throw FailAssertException();
 	std::cout << static_cast<char>(std::stoi(front->toString()));

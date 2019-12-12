@@ -5,6 +5,12 @@
 # include "parser.hpp"
 
 
+
+
+void			checkNumber(eOperandType op, std::string str) {
+
+}
+
 eOperandType	castToEOperandType(std::string cast) {
 	std::array<std::string, OPERAND_NUMBER> operands = {
 			"int8",
@@ -29,6 +35,8 @@ void			launchAction(Vm &vm, uint8_t	action, std::string value) {
 	std::regex_match(value, sm, std::regex("^ (.*)\\((.*)\\)$"));
 	if (!sm.size())
 		throw ParserExceptions::SyntacticErrorException();
+
+	checkNumber(castToEOperandType(sm[1]), sm[2]);
 
 	if (action)
 		vm.ass(castToEOperandType(sm[1]), sm[2]);
