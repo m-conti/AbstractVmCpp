@@ -37,6 +37,26 @@ public:
 			return ("An assert instruction is not true.");
 		}
 	};
+
+	class FailAssertTypeException : public FailAssertException {
+	public:
+		virtual const char *what() const throw() {
+			return ("An assert instruction is not true. Cause types are different");
+		}
+	};
+	class FailAssertValueException : public FailAssertException {
+	public:
+		virtual const char *what() const throw() {
+			return ("An assert instruction is not true. Cause values are different");
+		}
+	};
+
+	class PrintNoCharException : public std::exception {
+	public:
+		virtual const char *what() const throw() {
+			return ("Try to print a non-char value.");
+		}
+	};
 };
 
 class ParserExceptions {

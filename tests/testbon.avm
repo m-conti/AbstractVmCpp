@@ -14,12 +14,12 @@ push int32(10)
 
 
 
-push float(10)
+push float(10.0)
 push float(42.42)
-push double(10)
+push double(10.0)
 push double(42.42)
-push double(1)
-push double(-42)
+push double(1.0)
+push double(-42.0)
 push double(-42.42)
 add
 pop
@@ -28,6 +28,5 @@ sub
 mul
 div
 mod
-print
 exit
 ;;

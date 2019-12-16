@@ -57,9 +57,14 @@ void Vm::ass( eOperandType type, std::string const &value ) {
 	const IOperand *front = stack.front();
 	const IOperand *op = createOperand( type, value );
 
+	if ( front->getPrecision() != op->getPrecision() ) {
+		delete op;
+		throw FailAssertTypeException();
+	}
+
 	if ( front->toString() != op->toString() ) {
 		delete op;
-		throw FailAssertException();
+		throw FailAssertValueException();
 	}
 	delete op;
 }
@@ -165,7 +170,7 @@ void Vm::print( void ) {
 	if (stack.size() <= 0)
 		throw (EmptyStackException());
 	if ( front->getType() != eOperandType::Int8 )
-		throw FailAssertException();
+		throw PrintNoCharException();
 	std::cout << static_cast<char>(std::stoi(front->toString()));
 }
 
