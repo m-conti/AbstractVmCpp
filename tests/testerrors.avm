@@ -38,3 +38,5 @@ mul
 push int8t(10)
 push int8t(0)
 div
+
+;; exit error ;;

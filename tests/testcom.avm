@@ -1,4 +1,4 @@
-push double(10)		;		d10
+push double(10.0)		;		d10
 push int32(55555)	;		d10 32i55555
 div					;		d5555.5
 
