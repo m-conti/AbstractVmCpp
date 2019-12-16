@@ -10,18 +10,31 @@ print
 assert int8(10)
 pop
 
-; push error ;
+; push errors ;
 push int8(20000)
 push bool(0)
 
 push int8(10)
-; assert error ;
+; assert errors ;
 assert double(10.0001)
 assert bool(10)
 
-; syntax ;
+; syntax errors ;
 asserte int8(10)
-poush double(10)
+poush double(10.0)
 push int(10)
 push 10
-push int8()	; A CORRIGER
+push int8()
+push int8(0dsa)
+push double(0)
+
+; operand errors ;
+
+push int8(127)
+push int8(127)
+add
+push int8(-50)
+mul
+push int8t(10)
+push int8t(0)
+div

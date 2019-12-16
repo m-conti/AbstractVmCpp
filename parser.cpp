@@ -6,9 +6,23 @@
 
 
 
+void			checkNumberZ(std::string str) {
+	if (!std::regex_match(str, std::regex("-?[0-9]+.[0-9]+"))) {
+		throw ParserExceptions::IncorrectValueException();
+	}
+}
+
+void			checkNumberN(std::string str) {
+	if (!std::regex_match(str, std::regex("-?[0-9]+"))) {
+		throw ParserExceptions::IncorrectValueException();
+	}
+}
 
 void			checkNumber(eOperandType op, std::string str) {
-
+	if ( static_cast<int>(op) < static_cast<int>(eOperandType::Float) )
+		checkNumberN(str);
+	else
+		checkNumberZ(str);
 }
 
 eOperandType	castToEOperandType(std::string cast) {

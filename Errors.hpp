@@ -60,6 +60,12 @@ public:
 			return ("An operand type is unknown.");
 		}
 	};
+	class IncorrectValueException : public std::exception {
+	public:
+		virtual const char *what() const throw() {
+			return ("A value has not the good syntax.");
+		}
+	};
 };
 class OperdandException {
 public:
