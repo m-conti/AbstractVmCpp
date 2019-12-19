@@ -19,6 +19,8 @@ public:
 
 	Vm &operator=( Vm const &rhs );
 
+	void clear( void );
+
 	// functions Vm
 
 	void push( eOperandType type, std::string const &value );

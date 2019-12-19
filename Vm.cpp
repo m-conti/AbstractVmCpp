@@ -9,9 +9,7 @@ Vm::Vm() {
 }
 
 Vm::~Vm() {
-	for ( std::list<const IOperand *>::iterator it = stack.begin(); it != stack.end(); ++it ) {
-		delete (*it);
-	}
+	clear();
 }
 
 Vm &Vm::operator=( Vm const &rhs ) {
@@ -19,6 +17,10 @@ Vm &Vm::operator=( Vm const &rhs ) {
 
 	}
 	return (*this);
+}
+
+void Vm::clear() {
+	while (!stack.empty()) popNDelete();
 }
 
 void Vm::push( eOperandType type, std::string const &value ) {
