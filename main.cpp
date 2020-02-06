@@ -24,7 +24,9 @@ int		main(int ac, char **av) {
 			catch (std::exception const &e) {
 				std::cout << "Error : " << e.what() << std::endl;
 			}
+			vm.clear();
 		}
 	}
+
 	return (0);
 }

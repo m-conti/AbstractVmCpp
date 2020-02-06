@@ -1,0 +1,53 @@
+push double(10.0)		;		d10
+push int32(55555)	;		d10 32i55555
+div					;		d5555.5
+
+push float(0.5)		;		d5555.5 f0.5
+sub					;		d-5555
+
+push int16(4555)	;		d-5555 16i4555
+add					;		d-1000
+
+push int32(10000)	;		d-1000 32i10000
+div					;		d-10
+
+push int8(-10)		;		d-10 8i-10
+mul					;		d100
+
+push int16(32)		;		d100 16i32
+div					;		d0.32
+
+
+push int8(10)		;		d0.32 8i10
+push int8(14)		;		d0.32 8i10 8i14
+add					;		d0.32 8i24
+push int8(-1)		;		d0.32 8i24 8i-1
+sub					;		d0.32 8i-25
+push int8(40)		;		d0.32 8i-25 8i40
+sub					;		d0.32 8i65
+
+
+
+
+
+
+print				;		A
+sub					;		d64.68
+dump				;		d64.68
+
+exit				;		stop
+fdsf
+fsdf
+sdfsd
+sdf
+sdfdsfsdfsd
+dsfdsf
+sdfsd
+d
+dfsd
+fdssdds
+fsd
+sdsd
+fsd
+sdf
+sd

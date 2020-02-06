@@ -20,7 +20,7 @@ public:
 
 	~TOperand<T>() override = default;
 
-	T const cast(std::string const &value, eOperandType type) const;
+	double cast(std::string const &value, eOperandType type) const;
 
 	int getPrecision() const override;
 
@@ -63,15 +63,16 @@ TOperand<T>::TOperand(std::string value, eOperandType const &type) : _type(type)
 
 	if (number > limit.max())
 		throw (OperdandException::OverflowException());
-	if (number < limit.min())
+	if ( (static_cast<int>(type) < 3 && number < limit.min()) || (static_cast<int>(type) >= 3 && number < limit.lowest()) ) {
 		throw (OperdandException::UnderflowException());
+	}
 	_value = static_cast<T>(number);
 	_str = std::to_string(_value);
 	noTrailingZero(_str);
 }
 
 template<typename T>
-T const TOperand<T>::cast(std::string const &value, eOperandType type) const {
+double TOperand<T>::cast(std::string const &value, eOperandType type) const {
 	switch (type) {
 		case eOperandType::Int8:
 		case eOperandType::Int16:

@@ -1,0 +1,8 @@
+;; test fail assert ;;
+push int8(10)
+
+assert int8(12)
+assert double(10.0)
+assert int16(10)
+assert int8(10)
+exit

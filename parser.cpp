@@ -5,6 +5,26 @@
 # include "parser.hpp"
 
 
+
+void			checkNumberZ(std::string str) {
+	if (!std::regex_match(str, std::regex("-?[0-9]+.[0-9]+"))) {
+		throw ParserExceptions::IncorrectValueException();
+	}
+}
+
+void			checkNumberN(std::string str) {
+	if (!std::regex_match(str, std::regex("-?[0-9]+"))) {
+		throw ParserExceptions::IncorrectValueException();
+	}
+}
+
+void			checkNumber(eOperandType op, std::string str) {
+	if ( static_cast<int>(op) < static_cast<int>(eOperandType::Float) )
+		checkNumberN(str);
+	else
+		checkNumberZ(str);
+}
+
 eOperandType	castToEOperandType(std::string cast) {
 	std::array<std::string, OPERAND_NUMBER> operands = {
 			"int8",
@@ -29,6 +49,8 @@ void			launchAction(Vm &vm, uint8_t	action, std::string value) {
 	std::regex_match(value, sm, std::regex("^ (.*)\\((.*)\\)$"));
 	if (!sm.size())
 		throw ParserExceptions::SyntacticErrorException();
+
+	checkNumber(castToEOperandType(sm[1]), sm[2]);
 
 	if (action)
 		vm.ass(castToEOperandType(sm[1]), sm[2]);
@@ -62,17 +84,17 @@ bool			launchInstruction(Vm &vm, std::string const &line) {
 	bool error = true;
 	std::smatch sm;
 	std::array<std::regex, ACTIONS_NUMBER>	reg = {
-			std::regex("^push(.*)$"),
-			std::regex("^pop$"),
-			std::regex("^dump$"),
-			std::regex("^assert(.*)$"),
-			std::regex("^add$"),
-			std::regex("^sub$"),
-			std::regex("^mul$"),
-			std::regex("^div$"),
-			std::regex("^mod$"),
-			std::regex("^print$"),
-			std::regex("^exit$"),
+			std::regex("^push(.*\\))\\s*(?:;.*)?$"),
+			std::regex("^pop\\s*(?:;.*)?$"),
+			std::regex("^dump\\s*(?:;.*)?$"),
+			std::regex("^assert(.*\\))\\s*(?:;.*)?$"),
+			std::regex("^add\\s*(?:;.*)?$"),
+			std::regex("^sub\\s*(?:;.*)?$"),
+			std::regex("^mul\\s*(?:;.*)?$"),
+			std::regex("^div\\s*(?:;.*)?$"),
+			std::regex("^mod\\s*(?:;.*)?$"),
+			std::regex("^print\\s*(?:;.*)?$"),
+			std::regex("^exit\\s*(?:;.*)?$"),
 			std::regex("^;.*$")
 	};
 
@@ -136,6 +158,5 @@ void				parseInput(Vm &vm) {
 		if (str == ";;")
 			break ;
 	}
-	std::cout << stream.str() << std::endl;
 	parseStream(vm, stream);
 }
