@@ -9,7 +9,6 @@
 
 class Vm;
 
-void	parseLine(Vm &vm, std::string const &line);
 void	parseFile(Vm &vm, std::string const &file_name);
 void	parseInput(Vm &vm);
 
